@@ -1,16 +1,17 @@
 import { Box, Button, HStack, Heading, Text, Link } from "@chakra-ui/react";
-import React from "react";
-import { useAddress, useConnect } from "@thirdweb-dev/react";
+import React, { useState, useEffect } from "react";
+import { useAccount, useConnect } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
 
 const Layout = function ({ children }: { children: React.ReactNode }) {
-  const address = useAddress();
-  const [
-    {
-      data: { connectors },
-    },
-    connect,
-  ] = useConnect();
-
+  const { address, isConnected, connector } = useAccount();
+  const [isSSR, setIsSSR] = useState(true);
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  });
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
   return (
     <Box>
       <HStack
@@ -21,20 +22,20 @@ const Layout = function ({ children }: { children: React.ReactNode }) {
         justifyContent="space-between"
       >
         <Heading color={"white"}>LOGO</Heading>
-        {address ? (
+        {!isSSR && isConnected ? (
           <Text
             borderRadius={"2xl"}
             bgColor={"cyan.900"}
             px={"3"}
             color={"white"}
           >
-            {address.slice(0, -36)}...{address.substring(38)}
+            {address?.toString().slice(0, -36)}...
+            {address?.toString().substring(38)}
           </Text>
         ) : (
           <Button
-            variant="solid"
             onClick={() => {
-              connect(connectors[0]);
+              connect();
             }}
           >
             Connect Metamask
