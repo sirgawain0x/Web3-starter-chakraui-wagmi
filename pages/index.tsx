@@ -11,7 +11,7 @@ const Home: NextPage = () => {
         <Text>
           With <Link href="https://nextjs.org/">Next.js</Link>,{" "}
           <Link href="https://www.typescriptlang.org/">Typescript</Link>,{" "}
-          <Link href="https://thirdweb.com/">ThirdWeb</Link> and{" "}
+          <Link href="https://wagmi.sh/">Wagmi</Link> and{" "}
           <Link href="https://thirdweb.com/">Chakra-ui</Link>
         </Text>
         <Divider />
